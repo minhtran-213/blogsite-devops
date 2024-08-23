@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+  nextjs-app:
+    image: ghcr.io/minhtran-213/blogsite-webapp:0.0.1
+    ports:
+      - "3000:3000"
+    restart: on-failure
+  app:
+    image: ghcr.io/minhtran-213/blogsite-backend:0.0.3
+    ports:
+      - "3001:3001"  # Change the port as needed
+    env_file:
+      - .env  # Load environment variables from .env file
+    restart: on-failure
+    depends_on:
+      - mongo
+    networks:
+      - app-network
+
+  mongo:
+    image: ghcr.io/minhtran-213/custom-mongo:0.0.1
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin  # Set MongoDB root username
+      MONGO_INITDB_ROOT_PASSWORD: admin  # Set MongoDB root password
+      MONGO_INITDB_DATABASE: blogsite
+    volumes:
+      - mongo-data:/data/db  # Persist MongoDB data
+    networks:
+      - app-network
+  
+  mongo-express:
+    image: mongo-express:latest
+    restart: unless-stopped
+    ports:
+      - "8081:8081"  # Access Mongo Express on this port
+    environment:
+      ME_CONFIG_MONGODB_SERVER: mongo
+      ME_CONFIG_MONGODB_ADMINUSERNAME: admin  # Same as MongoDB username
+      ME_CONFIG_MONGODB_ADMINPASSWORD: admin  # Same as MongoDB password
+      ME_CONFIG_BASICAUTH_USERNAME: mongo
+      ME_CONFIG_BASICAUTH_PASSWORD: password
+    depends_on:
+      - mongo
+    networks:
+      - app-network
+
+volumes:
+  mongo-data:
+
+networks:
+  app-network:
+    driver: bridge
