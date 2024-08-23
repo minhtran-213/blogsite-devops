@@ -7,7 +7,7 @@ services:
       - "3000:3000"
     restart: on-failure
   app:
-    image: ghcr.io/minhtran-213/blogsite-backend:0.0.3
+    image: ghcr.io/minhtran-213/blogsite-backend:0.0.17
     ports:
       - "3001:3001"  # Change the port as needed
     env_file:
