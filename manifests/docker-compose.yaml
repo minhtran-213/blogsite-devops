@@ -5,6 +5,8 @@ services:
     image: ghcr.io/minhtran-213/blogsite-webapp:0.0.1
     ports:
       - "3000:3000"
+    env_file:
+      - .env
     restart: on-failure
   app:
     image: ghcr.io/minhtran-213/blogsite-backend:0.0.19
