@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   nextjs-app:
-    image: ghcr.io/minhtran-213/blogsite-webapp:0.2.1
+    image: ghcr.io/minhtran-213/blogsite-webapp:0.2.2
     ports:
       - "3000:3000"
     env_file:
